@@ -1,0 +1,11 @@
+body{
+    color: rgb(243, 126, 1);
+}
+#myBtn{
+    background-color: rgb(169, 206, 161);
+    color: seashell;
+    border-radius: 5px;
+}
+#myBtn:hover{
+    background-color: rgb(243, 126, 1);
+}

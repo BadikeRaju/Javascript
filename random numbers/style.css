@@ -1,0 +1,14 @@
+body{
+    font-family: verdana;
+    text-align: center;
+}
+#rollButton{
+    font-size: 3em;
+    padding: 5px 25px;
+    border-radius: 5px;
+      
+}
+#diceLabel{
+    font-size: 3em;
+    padding: 10px 25px;
+}

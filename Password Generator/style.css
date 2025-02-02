@@ -1,0 +1,72 @@
+body, h1, p, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+#container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: #2a9d8f;
+    margin-bottom: 1.5rem;
+}
+
+label {
+    font-size: 1rem;
+    color: #555;
+    margin-right: 0.5rem;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s ease;
+}
+input[type="number"]:focus {
+    border-color: #2a9d8f;
+    outline: none;
+}
+button {
+    background-color: #2a9d8f;
+    color: white;
+    font-size: 1rem;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #21867a;
+}
+#result {
+    font-size: 1.2rem;
+    color: #e76f51;
+    margin-top: 1rem;
+    word-wrap: break-word; 
+    white-space: pre-wrap; 
+}

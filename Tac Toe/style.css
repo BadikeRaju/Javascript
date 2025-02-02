@@ -1,0 +1,100 @@
+/* General Styling */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Light/Dark Theme */
+:root {
+  --bg-color: #f8f9fa;
+  --text-color: #333;
+  --primary-color: #6c63ff;
+  --secondary-color: #ff6584;
+  --board-bg: #ffffff;
+  --cell-hover: #e0e0e0;
+}
+
+.dark-mode {
+  --bg-color: #121212;
+  --text-color: #f8f9fa;
+  --board-bg: #1e1e1e;
+  --cell-hover: #444;
+}
+
+/* Layout */
+.app {
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+}
+
+header {
+  margin-bottom: 20px;
+}
+
+.scoreboard {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  background: var(--board-bg);
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  background: white;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.cell:hover {
+  background: var(--cell-hover);
+  transform: scale(1.05);
+}
+
+.cell.taken {
+  pointer-events: none;
+}
+
+#player-indicator {
+  margin: 20px 0;
+  font-size: 20px;
+}
+
+button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
+}

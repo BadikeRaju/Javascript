@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Tic Tac Toe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        .score-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 2rem auto;
+            max-width: 400px;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cell:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .cell.x::before,
+        .cell.x::after {
+            content: '';
+            position: absolute;
+            width: 70%;
+            height: 4px;
+            background: var(--secondary);
+            transform: rotate(45deg);
+        }
+
+        .cell.x::after {
+            transform: rotate(-45deg);
+        }
+
+        .cell.o::before {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            border: 4px solid var(--accent);
+            border-radius: 50%;
+        }
+
+        .controls {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            color: var(--dark);
+        }
+
+        @media (max-width: 480px) {
+            .board {
+                max-width: 300px;
+            }
+            
+            .cell {
+                border-radius: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ultimate Tic Tac Toe</h1>
+        <div class="scoreboard">
+            <div class="score-item">X Wins: <span id="scoreX">0</span></div>
+            <div class="score-item">O Wins: <span id="scoreO">0</span></div>
+        </div>
+        <div class="board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        <div class="controls">
+            <button id="reset"><i class="fas fa-sync-alt"></i>Reset Game</button>
+            <button id="mode"><i class="fas fa-robot"></i>vs Computer</button>
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2 id="resultText"></h2>
+            <button onclick="closeModal()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        const board = document.getElementById('board');
+        const cells = document.querySelectorAll('.cell');
+        const resetButton = document.getElementById('reset');
+        const modeButton = document.getElementById('mode');
+        const scoreX = document.getElementById('scoreX');
+        const scoreO = document.getElementById('scoreO');
+        const modal = document.getElementById('modal');
+        const resultText = document.getElementById('resultText');
+
+        let currentPlayer = 'X';
+        let gameState = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+        let vsComputer = false;
+        let scores = { X: 0, O: 0 };
+
+        const winningConditions = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+            [0, 4, 8], [2, 4, 6] // Diagonals
+        ];
+
+        // Initialize game
+        function initGame() {
+            cells.forEach(cell => {
+                cell.classList.remove('x', 'o', 'winner');
+                cell.addEventListener('click', handleCellClick);
+            });
+            updateScores();
+        }
+
+        function handleCellClick(e) {
+            const cell = e.target;
+            const index = cell.dataset.index;
+
+            if (!gameActive || gameState[index] !== '' || 
+                (vsComputer && currentPlayer === 'O')) return;
+
+            makeMove(cell, index);
+
+            if (vsComputer && gameActive) {
+                setTimeout(computerMove, 500);
+            }
+        }
+
+        function makeMove(cell, index) {
+            gameState[index] = currentPlayer;
+            cell.classList.add(currentPlayer.toLowerCase());
+            
+            if (checkWin()) {
+                handleWin();
+            } else if (gameState.every(cell => cell !== '')) {
+                handleDraw();
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            }
+        }
+
+        function computerMove() {
+            const emptyCells = gameState
+                .map((cell, index) => cell === '' ? index : null)
+                .filter(cell => cell !== null);
+            
+            if (emptyCells.length > 0) {
+                const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                const cell = cells[randomIndex];
+                makeMove(cell, randomIndex);
+            }
+        }
+
+        function checkWin() {
+            return winningConditions.some(condition => {
+                const [a, b, c] = condition;
+                if (gameState[a] && 
+                    gameState[a] === gameState[b] && 
+                    gameState[a] === gameState[c]) {
+                    highlightWinner(condition);
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        function highlightWinner(winningCombination) {
+            winningCombination.forEach(index => {
+                cells[index].classList.add('winner');
+            });
+        }
+
+        function handleWin() {
+            gameActive = false;
+            scores[currentPlayer]++;
+            updateScores();
+            showResult(`${currentPlayer} Wins!`);
+        }
+
+        function handleDraw() {
+            gameActive = false;
+            showResult("It's a Draw!");
+        }
+
+        function updateScores() {
+            scoreX.textContent = scores.X;
+            scoreO.textContent = scores.O;
+        }
+
+        function showResult(text) {
+            resultText.textContent = text;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            resetGame();
+        }
+
+        function resetGame() {
+            gameState = ['', '', '', '', '', '', '', '', ''];
+            gameActive = true;
+            currentPlayer = 'X';
+            initGame();
+        }
+
+        function toggleMode() {
+            vsComputer = !vsComputer;
+            modeButton.innerHTML = vsComputer ? 
+                '<i class="fas fa-user"></i>vs Player' : 
+                '<i class="fas fa-robot"></i>vs Computer';
+            resetGame();
+        }
+
+        // Event Listeners
+        resetButton.addEventListener('click', resetGame);
+        modeButton.addEventListener('click', toggleMode);
+        initGame();
+
+        // Add some sound effects (you'll need to add sound files)
+        function playSound(sound) {
+            const audio = new Audio(`sounds/${sound}.mp3`);
+            audio.play();
+        }
+    </script>
+</body>
+</html>

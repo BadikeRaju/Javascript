@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digita clock</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="clock-container">
+        <div class="controls">
+            <button id="toggleFormat">12/24H</button>
+            <button id="toggleSeconds">Seconds</button>
+        </div>
+        <div id="clock"></div>
+        <div class="date" id="date"></div>
+    </div>
+
+    <div class="theme-switcher">
+        <div class="theme-dot theme-cyan" data-theme="cyan"></div>
+        <div class="theme-dot theme-red" data-theme="red"></div>
+        <div class="theme-dot theme-blue" data-theme="blue"></div>
+        <div class="theme-dot theme-purple" data-theme="purple"></div>
+    </div>
+    <script src="script.js"></script>
+</body>    
+</html>

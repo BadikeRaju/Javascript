@@ -1,0 +1,115 @@
+:root {
+    --primary-color: #00ff9d;
+    --bg-color: #1a1a1a;
+    --card-bg: #2d2d2d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: var(--bg-color);
+    font-family: 'Segment7Standard', monospace;
+    transition: background 0.3s;
+}
+
+/* 7-segment display font */
+@font-face {
+    font-family: 'Segment7Standard';
+    src: url('https://cdn.rawgit.com/raphaelbastide/Segment7/gh-pages/fonts/Segment7Standard.otf') format('opentype');
+}
+
+.clock-container {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+    position: relative;
+}
+
+#clock {
+    font-size: 5rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 15px var(--primary-color);
+    letter-spacing: 5px;
+}
+
+.date {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-top: 1rem;
+    font-family: Arial, sans-serif;
+}
+
+.controls {
+    position: absolute;
+    bottom: 250px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 8px 15px;
+    background: var(--card-bg);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background: var(--primary-color);
+    color: var(--bg-color);
+}
+
+.theme-switcher {
+    position: fixed;
+    bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.theme-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+}
+
+/* Different color themes */
+.theme-cyan { background: #00ff9d; }
+.theme-red { background: #ff006a; }
+.theme-blue { background: #00a3ff; }
+.theme-purple { background: #ae00ff; }
+
+/* Animation for time update */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.updating {
+    animation: pulse 0.5s ease-in-out;
+}
+
+@media (max-width: 768px) {
+    #clock {
+        font-size: 3rem;
+    }
+    .date {
+        font-size: 1rem;
+    }
+}
